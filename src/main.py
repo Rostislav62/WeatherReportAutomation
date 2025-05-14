@@ -5,9 +5,9 @@ from scheduler import schedule_report, run_once
 from datetime import datetime
 
 
-def generate_report():
+def generate_report(style="minimal"):
     """Generate weather reports for both Excel and Google Sheets."""
-    print(f"Generating report at {datetime.now()}")
+    print(f"Generating report at {datetime.now()} with style: {style}")
 
     # Get weather data
     weather_data = get_all_weather_data()
@@ -17,8 +17,8 @@ def generate_report():
         return
 
     # Generate reports
-    excel_file = f"weather_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
-    create_excel_report(weather_data, excel_file)
+    excel_file = f"weather_report_{style}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+    create_excel_report(weather_data, excel_file, style=style)
     create_gsheets_report(weather_data)
 
     print(f"Reports generated successfully: {excel_file} and Google Sheet")
@@ -28,13 +28,15 @@ def main():
     parser = argparse.ArgumentParser(description="Weather Report Automation")
     parser.add_argument("--once", action="store_true",
                         help="Run report generation once and exit")
+    parser.add_argument("--style", choices=["minimal", "modern", "corporate"],
+                        default="minimal", help="Excel report style")
     args = parser.parse_args()
 
     if args.once:
-        run_once(generate_report)
+        run_once(lambda: generate_report(args.style))
     else:
-        print("Starting scheduled report generation (test at 16:32)")
-        schedule_report(generate_report, daily_time="16:32")  # Temporary test time
+        print("Starting scheduled report generation (daily at 09:00)")
+        schedule_report(lambda: generate_report(args.style), daily_time="09:00")
 
 
 if __name__ == "__main__":
