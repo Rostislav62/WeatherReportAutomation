@@ -36,6 +36,10 @@ def main():
         run_once(lambda: generate_report(args.style))
     else:
         print("Starting scheduled report generation (daily at 09:00)")
+        # Эту команду нужно запускать чтобы, получить ежедневный отчёт от 9 часов.
+        # python src/main.py - -style corporate
+        # Эту команду нужно запускать чтобы, получить одноразовый отчёт.
+        # python src/main.py --once --style corporate
         schedule_report(lambda: generate_report(args.style), daily_time="09:00")
 
 

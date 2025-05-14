@@ -68,6 +68,9 @@ python src/main.py --once --style corporate
 - `--once`: Generate a single report.
 - `--style`: Choose `minimal`, `modern`, or `corporate` (default: `minimal`).
 - Without `--once`, the script schedules daily reports at 9:00 AM (configurable in `main.py`).
+```bash
+python src/main.py --style corporate
+```
 
 Output:
 - **Excel**: `weather_report_{style}_{timestamp}.xlsx` in the project root.
